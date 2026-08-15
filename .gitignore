@@ -1,0 +1,3 @@
+.DS_Store
+runs/*/attempts/verify-output-*.log
+runs/factory.log.jsonl

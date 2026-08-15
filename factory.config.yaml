@@ -1,0 +1,25 @@
+# Global factory configuration. Per-repo settings live in repos/<name>.yaml
+# and override defaults where they overlap.
+version: 1
+owner: matt.conrad@joinhandshake.com
+
+# Model tiers (DESIGN.md §11). Agent role definitions reference tiers, not
+# model names, so upgrading a tier is a one-line change here.
+models:
+  judgment: opus     # planner, reviewer panel, security reviewer
+  craft: sonnet      # investigator, test-writer, builder, conformance, documenter
+  mechanical: haiku  # triage, integrator
+
+defaults:
+  max_build_attempts: 3     # failure-loop budget before an item parks (DESIGN.md §6)
+  max_plan_revisions: 2     # Gate 1 revise budget before it becomes a conversation
+  reviewer_votes: 3         # adversarial panel size
+
+notifications:
+  # Phase 2: scripts/notify.sh sends a Slack DM at Gate 1, Gate 2, and park.
+  slack_dm: matt.conrad@joinhandshake.com
+
+linear:
+  # Verified working 2026-08-11 (user: mattconrad). Default team for tickets
+  # the factory files; per-repo configs may override.
+  default_team: HAI

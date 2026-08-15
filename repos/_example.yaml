@@ -1,0 +1,33 @@
+# Per-repo config template. Copy to repos/<name>.yaml for each target repo.
+# The file name (minus .yaml) is the repo's factory name — what you pass to
+# `/factory new <name> ...` and scripts/verify.sh.
+#
+# Names starting with "_" are ignored by the factory (templates, fixtures).
+
+name: example
+path: /absolute/path/to/repo        # local checkout the factory works in
+default_branch: main
+
+# Verification steps (DESIGN.md §5 layer 1). Run in the order listed, in the
+# repo's `path`, by scripts/verify.sh. First failure stops the run and writes
+# a failure report. One `key: command` per line, two-space indent.
+verify:
+  lint: npm run lint
+  typecheck: npm run typecheck
+  test: npm test
+
+# Linear routing for tickets the factory updates or files for this repo.
+linear:
+  team: HAI
+  project: ""
+
+# Overrides of factory.config.yaml defaults (optional).
+max_build_attempts: 3
+
+# Fast lane (DESIGN.md §3.1): allow XS chores to skip investigate/plan/Gate 1.
+fast_lane: true
+
+# Conventions the planner/builder must follow, beyond the repo's CLAUDE.md.
+# Free text; injected into agent prompts.
+conventions: |
+  - (example) Prefer small PRs; split anything touching >10 files.
