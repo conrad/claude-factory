@@ -1,0 +1,29 @@
+name: learn-apps
+path: /Users/matt.conrad/Code/learn-apps
+default_branch: main
+
+# All four steps confirmed green locally on 2026-08-15 (~30s total).
+# CI additionally runs `go test -race` behind a Buf Schema Registry login
+# (ci/tests.sh) — not reproducible locally, so the race flag is omitted here;
+# the PR's CI run is the backstop for it.
+verify:
+  fmt: test -z "$(gofmt -l -s .)"
+  vet: go vet ./...
+  build: go build ./...
+  test: go test -count=1 ./...
+
+linear:
+  team: HAI
+  project: ""
+
+max_build_attempts: 3
+fast_lane: true
+
+conventions: |
+  - Go 1.25 module (github.com/joinhandshake/learn-apps); code lives under
+    internal/, entrypoint main.go, embedded web assets under web/.
+  - gofmt -s is enforced by CI (ci/lint.sh) — always run gofmt -s on touched files.
+  - CI runs tests with -race; avoid patterns that only pass without the race
+    detector.
+  - Packages with tests: api/handlers, api/middleware, api/router, authproxy,
+    config, eval, githubactions. New code in covered packages ships with tests.
